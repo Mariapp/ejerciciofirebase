@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "386415985093",
+    "firebase_url": "https://miprimeraapp-mariapp.firebaseio.com",
+    "project_id": "miprimeraapp-mariapp",
+    "storage_bucket": "miprimeraapp-mariapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386415985093:android:35b7b769f54a3727",
+        "android_client_info": {
+          "package_name": "com.example.didact.otroejerciciofinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386415985093-atk8sp9tgkju19kjsan2g5dm4l4jpo4h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.didact.otroejerciciofinal",
+            "certificate_hash": "6c660decc0c483669e5a63668db1d41de7895f5e"
+          }
+        },
+        {
+          "client_id": "386415985093-u8o4n0knc50of9307fvmrqqc1jj18bb8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGntoXHQyebD8SeoAWE218vf_2TrKhTm4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386415985093-u8o4n0knc50of9307fvmrqqc1jj18bb8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
