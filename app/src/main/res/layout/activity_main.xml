@@ -27,4 +27,11 @@
         android:layout_height="wrap_content"
         android:onClick="ejparte1"
         android:text="Ejercicio Parte1" />
+
+    <Button
+        android:id="@+id/btneliminar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="btneliminar"
+        android:text="Modificar, insertar y borrar" />
 </LinearLayout>

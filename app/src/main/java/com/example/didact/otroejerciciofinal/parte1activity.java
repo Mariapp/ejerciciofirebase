@@ -13,8 +13,6 @@ import com.google.firebase.database.ValueEventListener;
 public class parte1activity extends AppCompatActivity {
     TextView textViewparte1;
     private DatabaseReference dbRef;
-
-    //el evento Value nos permite recoger los datos a tiempo real
     private ValueEventListener valueEventListener;
 
     @Override

@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".parte1activity" />
         <activity android:name=".parte2activity" />
-        <activity android:name=".ejpart1"></activity>
+        <activity android:name=".ejpart1" />
+        <activity android:name=".segundaactivity"></activity>
     </application>
 
 </manifest>

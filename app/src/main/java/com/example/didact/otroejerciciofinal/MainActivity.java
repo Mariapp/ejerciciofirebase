@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void parte2(View view) {
 
-        Intent i = new Intent(getApplicationContext(), parte2activity.class);
+        Intent i = new Intent(getApplicationContext(), segundaactivity.class);
 
         startActivity(i);
     }
@@ -32,5 +32,13 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(getApplicationContext(), ejpart1.class);
 
         startActivity(i);
+    }
+
+    public void btneliminar (View view){
+
+        Intent i = new Intent(getApplicationContext(), parte2activity.class);
+
+        startActivity(i);
+
     }
 }
