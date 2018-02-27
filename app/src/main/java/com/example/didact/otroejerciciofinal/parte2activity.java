@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 public class parte2activity extends AppCompatActivity {
 
 
-    EditText etnombre,etdorsal,etposicion,etsueldo;
+    EditText etnombre, etdorsal, etposicion, etsueldo;
 
     Spinner spinerjugadores;
 
@@ -32,142 +32,207 @@ public class parte2activity extends AppCompatActivity {
         setContentView(R.layout.activity_parte2activity);
 
 
+        etnombre = (EditText) findViewById(R.id.etnombre);
+        etdorsal = (EditText) findViewById(R.id.etdorsal);
+        etposicion = (EditText) findViewById(R.id.etposicion);
+        etsueldo = (EditText) findViewById(R.id.etsueldo);
 
-        etnombre=(EditText)findViewById(R.id.etnombre);
-        etdorsal=(EditText)findViewById(R.id.etdorsal);
-        etposicion=(EditText)findViewById(R.id.etposicion);
-        etsueldo=(EditText)findViewById(R.id.etsueldo);
-
-        spinerjugadores=(Spinner) findViewById(R.id.spinerjugadores);
-
+        spinerjugadores = (Spinner) findViewById(R.id.spinerjugadores);
 
 
-            //crear array y adaptador
-        String[] jugadores={"","j1","j2","j3","j4","nuevo jugador"};
-        ArrayAdapter<String> Adaptador=new ArrayAdapter <String>(this,
-                android.R.layout.simple_expandable_list_item_1,jugadores);
-            //llamar al adaptador
+        //crear array y adaptador
+        String[] jugadores = {"", "j1", "j2", "j3", "j4", "j5", "j6", "j7", "j8"};
+        ArrayAdapter <String> Adaptador = new ArrayAdapter <String>(this,
+                android.R.layout.simple_expandable_list_item_1, jugadores);
+        //llamar al adaptador
         spinerjugadores.setAdapter(Adaptador);
-            //nueva variable string con el item seleccionado
-        String jugadorseleccionado= spinerjugadores.getSelectedItem().toString();
-
-
+        //nueva variable string con el item seleccionado
+        String jugadorseleccionado = spinerjugadores.getSelectedItem().toString();
+        cargardatosFirebase();
 
 
     }//fin del oncrate
 
 
-
-    private void cargardatosFirebase (){
+    private void cargardatosFirebase() {
 //referencia a la base de datos
-        dbRef= FirebaseDatabase.getInstance().getReference().child("jugadores");
+        dbRef = FirebaseDatabase.getInstance().getReference().child("jugadores");
 //añadimos el evento que nos devolvera los valores
-        valueEventListener=new ValueEventListener(){
+        valueEventListener = new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot){
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
 
-                Cjugador jug=dataSnapshot.getValue(Cjugador.class);
-                etnombre.setText("nombre "+jug.getNombre());
-                etdorsal.setText("dorsal "+jug.getDorsal());
-                etposicion.setText("posicion "+jug.getPosicion());
-                etsueldo.setText("sueldo "+jug.getSueldo());
-                }
+                Cjugador jug = dataSnapshot.getValue(Cjugador.class);
+                etnombre.setText(jug.getNombre());
+                etdorsal.setText("" + jug.getDorsal());
+                etposicion.setText(jug.getPosicion());
+                etsueldo.setText("" + jug.getSueldo());
+            }
 
             @Override
-            public void onCancelled(DatabaseError databaseError){
+            public void onCancelled(DatabaseError databaseError) {
                 Log.e("segundaactivity", "Database ERROR");
 
 
             }
 
-        }; dbRef.addValueEventListener(valueEventListener);
-}
+        };
+        dbRef.addValueEventListener(valueEventListener);
+    }
 
-    public void seleccionar (View view){
+    public void seleccionar(View view) {
 
         //ide del spinner
 
-     String jugadorseleccionado= spinerjugadores.getSelectedItem().toString();
+        String jugadorseleccionado = spinerjugadores.getSelectedItem().toString();
 
 
         //llamar a la base de datos y el item seleccionado jugador/
-     dbRef= FirebaseDatabase.getInstance().getReference().child("jugadores/"+jugadorseleccionado);
-     valueEventListener=new ValueEventListener() {
-         @Override
-         public void onDataChange(DataSnapshot dataSnapshot) {
+        dbRef = FirebaseDatabase.getInstance().getReference().child("jugadores/" + jugadorseleccionado);
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-             Cjugador jug=dataSnapshot.getValue(Cjugador.class);
-             etnombre.setText("nombre "+jug.getNombre());
-             etdorsal.setText("dorsal "+jug.getDorsal()+"");
-             etposicion.setText("posicion "+jug.getPosicion());
-             etsueldo.setText("sueldo "+jug.getSueldo()+"");
+                Cjugador jug = dataSnapshot.getValue(Cjugador.class);
+                if(jug!=null) {
+                    etnombre.setText(jug.getNombre());
+                    etdorsal.setText(jug.getDorsal() + "");
+                    etposicion.setText(jug.getPosicion());
+                    etsueldo.setText(jug.getSueldo() + "");
+                }
 
+            }
 
-         }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("segundaactivity", "Database ERROR");
 
-         @Override
-         public void onCancelled(DatabaseError databaseError) {
-             Log.e("");
+            }
+        };
 
-         }
-     };
+        // dbRef.addValueEventListener(valueEventListener);//si queremos base de datos a tiempo real
+        dbRef.addListenerForSingleValueEvent(valueEventListener);//si queremos base de datos de 1 sola carga
+        //dbRef.removeEventListener(valueEventListener);//destruye la conexion a tiempo real.
 
-     // dbRef.addValueEventListener(valueEventListener);//si queremos base de datos a tiempo real
-     dbRef.addListenerForSingleValueEvent(valueEventListener);//si queremos base de datos de 1 sola carga
-     //dbRef.removeEventListener(valueEventListener);//destruye la conexion a tiempo real.
-
- }
-
-    public void guardar (View v){
-
-        final String cajanombre= etnombre.getText().toString();
-        final String cajadorsal= etdorsal.getText().toString();
-        final String cajaposicion= etposicion.getText().toString();
-        final String cajasueldo= etsueldo.getText().toString();
-
-        String jugadorseleccionado= spinerjugadores.getSelectedItem().toString();
+    }
 
 
+    public void guardar(View view) {
+
+        String nombre = etnombre.getText().toString();
+        String strDorsal = etdorsal.getText().toString();
+        String posicion = etposicion.getText().toString();
+        String strSueldo = etsueldo.getText().toString();
+
+        if (nombre.equals("") || strDorsal.equals("") || posicion.equals("") || strSueldo.equals("")) {
+            Toast.makeText(getApplicationContext(), "Rellena todos los campos", Toast.LENGTH_LONG).show();
+        } else {
+            int dorsal = Integer.parseInt(strDorsal);
+            int sueldo = Integer.parseInt(strSueldo);
+            Cjugador nuevoJugador = new Cjugador(nombre, dorsal, posicion, sueldo);
+            dbRef = FirebaseDatabase.getInstance().getReference()
+                    .child("jugadores");
+
+            //String nueva_clave = dbRef.push().setValue(nuevoJugador, new DatabaseReference.CompletionListener(){
+            dbRef.child("j9").setValue(nuevoJugador, new DatabaseReference.CompletionListener() {
+
+                public void onComplete(DatabaseError error, DatabaseReference ref) {
+                    if (error == null) {
+
+                        Toast.makeText(getApplicationContext(),
+                                "INSERTADO CORRECTAMENTE",
+                                Toast.LENGTH_LONG).show();
+
+                        limpiarFormulario();
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "NO SE PUEDE INSETAR EL JUGADOR",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
+        }
+    }
+
+    public void modificar(View v) {
+        String nombre = etnombre.getText().toString();
+        String strDorsal = etdorsal.getText().toString();
+        String posicion = etposicion.getText().toString();
+        String strSueldo = etsueldo.getText().toString();
+
+        if (nombre.equals("") || strDorsal.equals("") || posicion.equals("") || strSueldo.equals("")) {
+            Toast.makeText(getApplicationContext(), "Rellena todos los campos", Toast.LENGTH_LONG).show();
+        } else {
+            int dorsal = Integer.parseInt(strDorsal);
+            int sueldo = Integer.parseInt(strSueldo);
+            Cjugador nuevoJugador = new Cjugador(nombre, dorsal, posicion, sueldo);
+            dbRef = FirebaseDatabase.getInstance().getReference()
+                    .child("jugadores");
 
 
-        dbRef= FirebaseDatabase.getInstance().getReference().child("jugadores/"+jugadorseleccionado);
-       // valueEventListener=new ValueEventListener() {
+            //String nueva_clave = dbRef.push().setValue(nuevoJugador, new DatabaseReference.CompletionListener(){
+            String idseleccionada = spinerjugadores.getSelectedItem().toString();
+            dbRef.child(idseleccionada).setValue(nuevoJugador, new DatabaseReference.CompletionListener() {
 
+                public void onComplete(DatabaseError error, DatabaseReference ref) {
+                    if (error == null) {
 
+                        Toast.makeText(getApplicationContext(),
+                                "MODIFICADO CORRECTAMENTE",
+                                Toast.LENGTH_LONG).show();
 
+                        limpiarFormulario();
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "NO SE PUEDE MODIFICAR EL JUGADOR",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
 
-
-
-        //etsueldo.setText("nombre"+cajasueldo);
-        //etnombre.setText("nombre"+cajanombre);
-        //etposicion.setText("nombre"+cajaposicion);
-        //etdorsal.setText("nombre"+cajadorsal);
-
-      //  Cjugador nuevojugador =getText().toString(cajanombre,cajadorsal,cajaposicion,cajasueldo);
-            //guardar valores en base de datos:
-
-              //  String nueva_clave=dbRef.push().setValue(nuevoJugador, new DatabaseReference());
-               // Cjugador nuevoJugador=new Cjugador(dorsal,nombre, posicion, sueldo);
-            //dbRef= FirebaseDatabase.getInstance().getReference();
-              //  dbRef.child("j7").setValue(nuevoJugador, (completionListener));
+        }
 
 
     }
 
-            //@Override
-            //public void onCancelled(DatabaseError databaseError) {
+
+    public void eliminar(View v) {
+
+        dbRef = FirebaseDatabase.getInstance().getReference()
+                .child("jugadores");
+
+        String idseleccionada = spinerjugadores.getSelectedItem().toString();
+        dbRef.child(idseleccionada).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError error, DatabaseReference databaseReference) {
+                if (error == null) {
+
+                    Toast.makeText(getApplicationContext(),
+                            "ELIMINADO CORRECTAMENTE",
+                            Toast.LENGTH_LONG).show();
+
+                    limpiarFormulario();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "NO SE PUEDE ELIMINAR EL JUGADOR",
+                            Toast.LENGTH_LONG).show();
+                }
+
 
             }
-        };
- }
 
 
-   // public void eliminar (View v){
-
- }
-
+        });
+    }
 
 
+    private void limpiarFormulario() {
+        etnombre.setText("");
+        etdorsal.setText("");
+        etposicion.setText("");
+        etsueldo.setText("");
+    }
 
 }//Fin del main
